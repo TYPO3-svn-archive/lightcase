@@ -1,0 +1,13 @@
+/*
+ * Custom styles for the flash messages
+ *
+ * @package		TYPO3
+ * @subpackage	tx_lightcase
+ */
+
+.typo3-message {
+	position: absolute;
+	z-index: 99999;
+	top: 0;
+	padding: 11px 11px 11px 35px;
+}

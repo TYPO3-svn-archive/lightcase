@@ -1,0 +1,6 @@
+plugin.tx_lightcase {
+	image {
+		maxWidth = 1000
+		maxHeight = 800
+	}
+}

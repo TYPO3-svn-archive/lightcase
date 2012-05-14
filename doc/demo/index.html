@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="imagetoolbar" content="no" />
+	<title>Lightcase v1.0.1 | Demo</title>
+	<script type="text/javascript" src="http://api.html5media.info/1.1.5/html5media.min.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+	<script>
+		!window.jQuery && document.write('<script src="../../resources/javascripts/libraries/jQuery/1.7/jquery.min.js"><\/script>');
+	</script>
+	<script type="text/javascript" src="../../resources/javascripts/lightcase.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function($) {
+			$('a[rel^=lightcase]').lightcase('init', {transition : 'elastic'});
+			$('a[rel="lightcase:example_group"]').lightcase('init', {showSequenceInfo : false});
+
+			$('#example1').lightcase('init', {transition : 'none'});
+			$('#example2').lightcase('init', {transition : 'fade'});
+			$('#example4').lightcase('init', {transition : 'elastic'});
+			
+			$('#various5').lightcase('init', {
+				showSequenceInfo : false
+				,onStart : function() {
+					html5media();
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" type="text/css" href="../../resources/css/lightcase.css" media="screen" />
+ 	<link rel="stylesheet" type="text/css" href="./resources/style.css" />
+</head>
+<body>
+<div id="content">
+	<h1>Lightcase <span>v1.0.1</span></h1>
+	<hr />
+    <h3>Different animations</h3>
+    <div class="thumbs">
+        <p>
+            <a id="example1" rel="lightcase" href="./images/1b.jpg" title=""><img src="./images/1s.jpg" alt="" /></a>
+            <a id="example2" rel="lightcase" href="./images/2b.jpg" title=""><img src="./images/2s.jpg" alt="" /></a>
+            <a id="example3" rel="lightcase" href="./images/3b.jpg" title=""><img src="./images/3s.jpg" alt="" /></a>
+            <a id="example4" rel="lightcase" href="./images/4b.jpg" title="" class="last"><img class="last" src="./images/4s.jpg" alt="" /></a>
+        </p>
+
+        <h3>Including title</h3>
+        <p>
+            <a id="example5" rel="lightcase" href="./images/5b.jpg" title="Leaves in the Sky"><img src="./images/5s.jpg" alt="The leaves are swimming in a Fountain in Zurich. They are lit from underneith. Air bubbles help keeping the leaves on the surface and there are some more bubbles and particles floating in the water." /></a>
+            <a id="example6" rel="lightcase" href="./images/6b.jpg" title="Alpstein"><img src="./images/6s.jpg" alt="" /></a>
+            <a id="example7" rel="lightcase" href="./images/7b.jpg" title="Reptile"><img src="./images/7s.jpg" alt="Lizzard on the castle ruin Neu Falkenstein in St. Wolfgang/Balsthal." /></a>
+            <a id="example8" rel="lightcase" href="./images/8b.jpg" title="Landing" class="last"><img class="last" src="./images/8s.jpg" alt="" /></a>
+        </p>
+
+        <h3>Image gallery (You also can use keys to navigate...)</h3>
+        <p>
+            <a rel="lightcase:example_group:slideshow" href="./images/9b.jpg" title="Hear nothing, See nothing, Say nothing"><img src="./images/9s.jpg" alt="" /></a>
+            <a rel="lightcase:example_group:slideshow" href="./images/10b.jpg" title="Cool down"><img src="./images/10s.jpg" alt="" /></a>
+            <a rel="lightcase:example_group:slideshow" href="./images/11b.jpg" title="Beach chairs"><img src="./images/11s.jpg" alt="" /></a>
+            <a rel="lightcase:example_group:slideshow" href="./images/12b.jpg" title="No Money" class="last"><img src="./images/12s.jpg" alt="" /></a>
+        </p>
+    </div>
+
+	<h3>Various examples</h3>
+	<ul>
+		<li><a id="various1" rel="lightcase:example_group" href="#inline1">Inline</a></li>
+		<li><a id="various2" rel="lightcase:example_group" href="./ajax.txt">Ajax</a></li>
+		<li><a id="various3" rel="lightcase:example_group" href="http://filamentgroup.com/examples/responsive-images/">Iframe</a></li>
+		<li><a id="various4" rel="lightcase:example_group" href="http://www.adobe.com/jp/events/cs3_web_edition_tour/swfs/perform.swf">Swf</a></li>
+		<li><a id="various5" rel="lightcase:example_group" href="./videos/animals.mp4">HTML5 Video</a></li>
+		<li><a rel="lightcase:example_group" href="./images/9.jpg">Not found...</a></li>
+	</ul>
+    <div style="display: none;">
+		<div id="inline1">
+			<h4 class="first">This content is a from a hidden element on this page</h4>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis mi eu elit tempor facilisis id et neque. Nulla sit amet sem sapien. Vestibulum imperdiet porta ante ac ornare. Nulla et lorem eu nibh adipiscing ultricies nec at lacus. Cras laoreet ultricies sem, at blandit mi eleifend aliquam. Nunc enim ipsum, vehicula non pretium varius, cursus ac tortor.</p>
+            <p>Vivamus fringilla congue laoreet. Quisque ultrices sodales orci, quis rhoncus justo auctor in. Phasellus dui eros, bibendum eu feugiat ornare, faucibus eu mi. Nunc aliquet tempus sem, id aliquam diam varius ac. Maecenas nisl nunc, molestie vitae eleifend vel.</p>
+		</div>
+	</div>
+	<hr  />
+	<p class="createdBy">
+		Lightcase is coded by <a href="http://www.cornel.bopp-art.com" target="_blank">Cornel Boppart</a><br />
+       Photo credit <a href="http://www.simonsharp.ch" target="_blank">Simon Sharp</a>
+	</p>
+</div>
+</body>
+</html>

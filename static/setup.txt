@@ -1,0 +1,99 @@
+plugin.tx_lightcase {
+	/* 
+	 * Here you're able to use all properties for e.g. includeJS or includeCSS
+	 * Have a look there: http://typo3.org/documentation/document-library/references/doc_core_tsref/4.5.0/view/1/6/
+	 */
+	include {
+		includeCSS {
+			lightcase = EXT:lightcase/resources/css/lightcase.css
+		}
+		
+		includeJSFooterlibs {
+			jQuery = https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js
+			jQuery {
+				external = 1
+			}
+				# If the library source won't be available from cdn, use internal file instead.
+			jQueryFallback = EXT:lightcase/resources/javascripts/libraries/jQuery/1.7/jquery.min.js
+			jQueryFallback {
+				allWrap (
+					<script type="text/javascript">
+						!window.jQuery && document.write('|');
+					</script>
+				)
+			}
+		}
+		
+		includeJSFooter {
+			lightcase = EXT:lightcase/resources/javascripts/lightcase.js
+			lightcaseInit = EXT:lightcase/resources/javascripts/lightcase.init.js
+		}
+		
+			# To prevent any conflicts with other cObject, use timestamps or another random number.
+		jsInline {
+			1325940446 = TEXT
+			1325940446.dataWrap = var language = '{TSFE:config|config|language}';
+		}	
+	}
+}
+
+	# Modify tt_content
+tt_content {
+	image {
+		20 {
+			1 {
+				imageLinkWrap >
+				
+					# lightcase link
+				imageLinkWrap = 1
+				imageLinkWrap {
+					enable {
+						field = image_zoom
+							# if image_link is selected return false
+						if {
+							isTrue {
+								field = image_link
+								listNum.stdWrap.data = register:IMAGE_NUM_CURRENT
+							}
+							negate = 1
+						}
+					}
+					
+					typolink {
+						parameter.cObject = IMG_RESOURCE
+						parameter.cObject {
+							file {
+								import.dataWrap = {field:txdam_file_path}{field:txdam_file_name}
+								maxW = {$plugin.tx_lightcase.image.maxWidth}
+								maxH = {$plugin.tx_lightcase.image.maxHeight}
+							}
+						}
+						
+						ATagParams.cObject = TEXT
+						ATagParams.cObject {
+							insertData = 1
+							value = rel="lightcase:c{field:uid}"
+							
+							override.cObject = TEXT
+							override.cObject {
+								if.isTrue.field = tx_lightcase_slideshow
+								value = rel="lightcase:c{field:uid}:slideshow"
+								insertData = 1
+							}
+						}
+					}
+				}
+				
+					# default link
+				stdWrap {
+					typolink {
+						parameter {
+							field = image_link
+							listNum.stdWrap.data = register:IMAGE_NUM_CURRENT
+						}
+					}
+				}
+			}
+		}
+	}
+}

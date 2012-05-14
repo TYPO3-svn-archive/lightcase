@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2012-01-23T20:27:13Z" product-name="tx_lightroom">
+		<header/>
+		<body>
+			<trans-unit id="errorMessage" approved="yes">
+				<source>Could not found the requested source...</source>
+				<target>Die Daten konnten nicht gefunden werden...</target>
+			</trans-unit>
+			<trans-unit id="sequenceInfo.of" approved="yes">
+				<source> of </source>
+				<target> von </target>
+			</trans-unit>
+			<trans-unit id="close" approved="yes">
+				<source>Close</source>
+				<target>Schliessen</target>
+			</trans-unit>
+			<trans-unit id="navigator.prev" approved="yes">
+				<source>Prev</source>
+				<target>Zurück</target>
+			</trans-unit>
+			<trans-unit id="navigator.next" approved="yes">
+				<source>Next</source>
+				<target>Weiter</target>
+			</trans-unit>
+			<trans-unit id="navigator.play" approved="yes">
+				<source>Play</source>
+				<target>Play</target>
+			</trans-unit>
+			<trans-unit id="navigator.pause" approved="yes">
+				<source>Pause</source>
+				<target>Pause</target>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

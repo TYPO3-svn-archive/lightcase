@@ -1,0 +1,2 @@
+	# Allows to set rel attributes to links from RTE
+RTE.default.buttons.link.relAttribute.enabled = 1
