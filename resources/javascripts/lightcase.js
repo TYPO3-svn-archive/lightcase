@@ -754,11 +754,11 @@ jQuery.noConflict();
 
 			$nav.removeClass('paused');
 			$next.unbind('timeoutClick').dequeue();
-
+			
 			$next.bind('timeoutClick', function() {
 				lightcase.nav.$nextItem.click();
 			}).delay(lightcase.settings.timeout).queue(function() {
-				$(this).trigger('timeoutClick');
+				$next.trigger('timeoutClick');
 			});
 		}
 
@@ -770,9 +770,9 @@ jQuery.noConflict();
 		,stopTimeout : function() {
 			$play.show();
 			$pause.hide();
-
+			
 			$nav.addClass('paused');
-			$next.unbind('timeoutClick').dequeue();
+			$next.unbind('timeoutClick');
 		}
 
 		/**
