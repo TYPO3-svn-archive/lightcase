@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2012-01-23T20:27:13Z" product-name="tx_lightroom">
+	<file source-language="en" datatype="plaintext" original="messages" date="2012-01-23T20:27:13Z" product-name="tx_lightcase">
 		<header/>
 		<body>
 			<trans-unit id="errorMessage">
