@@ -18,7 +18,10 @@ plugin.tx_lightcase {
 			jQueryFallback {
 				allWrap (
 					<script type="text/javascript">
-						!window.jQuery && document.write('|');
+						<!--//
+							!window.jQuery && document.write('|');
+							jQuery.noConflict();
+						//-->
 					</script>
 				)
 			}
