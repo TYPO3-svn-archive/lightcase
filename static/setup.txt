@@ -20,7 +20,6 @@ plugin.tx_lightcase {
 					<script type="text/javascript">
 						<!--//
 							!window.jQuery && document.write('|');
-							jQuery.noConflict();
 						//-->
 					</script>
 				)
