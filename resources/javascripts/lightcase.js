@@ -132,7 +132,7 @@ jQuery.noConflict();
 				,url : lightcase.verifyDataUrl($element.attr('href'))
 				,rel : $element.attr('rel')
 				,type : lightcase.verifyDataType($element.attr('href'))
-				,isPartOfSequence : lightcase.isPartOfSequence($element.attr('rel'), 'lightcase:')
+				,isPartOfSequence : lightcase.isPartOfSequence($element.attr('rel'), ':')
 				,isPartOfSequenceWithSlideshow : lightcase.isPartOfSequence($element.attr('rel'), ':slideshow')
 				,currentIndex : $('[rel="' + $element.attr('rel') + '"]').index($element)
 				,sequenceLength : $('[rel="' + $element.attr('rel') + '"]').length
@@ -612,7 +612,7 @@ jQuery.noConflict();
 
 			switch (lightcase.settings.transition) {
 				case 'fade' :
-					if ($case.css('display') === 'none') {
+					if ($case.is(':hidden')) {
 						$case.stop().fadeTo(0, 0, function() {
 							lightcase.loadContent();
 						});
@@ -623,7 +623,7 @@ jQuery.noConflict();
 					}
 					break;
 				case 'fadeInline' : case 'elastic' :
-					if ($case.css('display') === 'none') {
+					if ($case.is(':hidden')) {
 						$case.stop().fadeTo(0, 0);
 						$contentInner.stop().fadeTo(0, 0, function() {
 							lightcase.loadContent();
@@ -754,11 +754,11 @@ jQuery.noConflict();
 
 			$nav.removeClass('paused');
 			$next.unbind('timeoutClick').dequeue();
-
+			
 			$next.bind('timeoutClick', function() {
 				lightcase.nav.$nextItem.click();
 			}).delay(lightcase.settings.timeout).queue(function() {
-				$(this).trigger('timeoutClick');
+				$next.trigger('timeoutClick');
 			});
 		}
 
@@ -770,9 +770,9 @@ jQuery.noConflict();
 		,stopTimeout : function() {
 			$play.show();
 			$pause.hide();
-
+			
 			$nav.addClass('paused');
-			$next.unbind('timeoutClick').dequeue();
+			$next.unbind('timeoutClick');
 		}
 
 		/**
@@ -816,8 +816,9 @@ jQuery.noConflict();
 		 * @return	void
 		 */
 		,lightcaseOpen : function() {
+			lightcase.open = true;
 			$overlay.css('opacity', lightcase.settings.overlayOpacity);
-
+			
 			switch (lightcase.settings.transition) {
 				case 'fade' :
 				case 'fadeInline' :
@@ -840,6 +841,7 @@ jQuery.noConflict();
 		 * @return	void
 		 */
 		,lightcaseClose : function() {
+			lightcase.open = false;
 			$loading.hide();
 
 			switch (lightcase.settings.transition) {
