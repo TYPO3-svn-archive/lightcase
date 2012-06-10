@@ -51,6 +51,8 @@ jQuery.noConflict();
 				,speedOut : 250
 				,maxWidth : 800
 				,maxHeight : 500
+				,forceWidth : false
+				,forceHeight : false
 				,shrinkFactor : .75
 				,overlayOpacity : .85
 				,slideshow : false
@@ -193,7 +195,7 @@ jQuery.noConflict();
 					break;
 				case 'inline' :
 					var $object = $('<div class="inlineWrap"></div>');
-					$object.html($(lightcase.objectData.url).clone());
+					$object.html($(lightcase.objectData.url).clone().show());
 
 						// Add custom attributes from lightcase.settings
 					$.each(lightcase.settings.inline, function(name, value) {
@@ -221,7 +223,7 @@ jQuery.noConflict();
 				case 'video' :
 					var $object = $('<video></video>');
 					$object.attr('src', lightcase.objectData.url);
-					
+
 						// Add custom attributes from lightcase.settings
 					$.each(lightcase.settings.video, function(name, value) {
 						$object.attr(name, value);
@@ -241,10 +243,10 @@ jQuery.noConflict();
 
 				// Add object to content holder
 			$contentInner.html($object);
-			
+
 				// Start loading
 			lightcase.loading('start');
-			
+
 				// Call hook function on start
 			lightcase.settings.onStart();
 
@@ -272,7 +274,7 @@ jQuery.noConflict();
 				$caption.empty();
 				$caption.hide();
 			}
-
+			
 				// Load object
 			switch (lightcase.objectData.type) {
 				case 'inline' :
@@ -303,16 +305,20 @@ jQuery.noConflict();
 					if (typeof($object.get(0).canPlayType) === 'function' || $case.find('video').length === 0) {
 						lightcase.showContent($object);
 					} else {
-						lightcase.error();	
+						lightcase.error();
 					}
 					break;
 				default :
-					$object.load(function() {
-						lightcase.showContent($object);
-					});
-					$object.error(function() {
+					if (lightcase.objectData.url) {
+						$object.load(function() {
+							lightcase.showContent($object);
+						});
+						$object.error(function() {
+							lightcase.error();
+						});
+					} else {
 						lightcase.error();
-					});
+					}
 			}
 		}
 
@@ -324,7 +330,7 @@ jQuery.noConflict();
 		,error : function() {
 			lightcase.objectData.type = 'error';
 			var $object = $('<div class="inlineWrap"></div>');
-			
+
 			$object.html(lightcase.settings.errorMessage);
 			$contentInner.html($object);
 
@@ -355,7 +361,7 @@ jQuery.noConflict();
 				,maxWidth : parseInt(lightcase.dimensions.windowWidth * lightcase.settings.shrinkFactor)
 				,maxHeight : parseInt(lightcase.dimensions.windowHeight * lightcase.settings.shrinkFactor)
 			}
-			
+
 				// If the auto calculated maxWidth/maxHeight greather than the userdefined one, use that.
 			if (dimensions.maxWidth > lightcase.settings.maxWidth) {
 				dimensions.maxWidth = lightcase.settings.maxWidth;
@@ -363,7 +369,7 @@ jQuery.noConflict();
 			if (dimensions.maxHeight > lightcase.settings.maxHeight) {
 				dimensions.maxHeight = lightcase.settings.maxHeight;
 			}
-			
+
 				// Calculate the difference between screen width/height and image width/height
 			dimensions.differenceWidthAsPercent = parseInt(100 / dimensions.maxWidth * dimensions.objectWidth);
 			dimensions.differenceHeightAsPercent = parseInt(100 / dimensions.maxHeight * dimensions.objectHeight);
@@ -379,7 +385,7 @@ jQuery.noConflict();
 						dimensions.objectWidth = parseInt(dimensions.maxWidth / dimensions.differenceHeightAsPercent * dimensions.differenceWidthAsPercent);
 						dimensions.objectHeight = parseInt(dimensions.objectHeight / dimensions.differenceHeightAsPercent * 100);
 					}
-					
+
 						// For images set objectHeight always to auto
 					if (lightcase.objectData.type === 'image') {
 						dimensions.objectHeight = 'auto';
@@ -394,10 +400,10 @@ jQuery.noConflict();
 					dimensions.objectHeight = 'auto';
 					break;
 				default :
-					if (isNaN(dimensions.objectWidth) || dimensions.objectWidth > dimensions.maxWidth) {
+					if ((isNaN(dimensions.objectWidth) || dimensions.objectWidth > dimensions.maxWidth) && !lightcase.settings.forceWidth) {
 						dimensions.objectWidth = dimensions.maxWidth;
 					}
-					if (isNaN(dimensions.objectHeight) || dimensions.objectHeight > dimensions.maxHeight) {
+					if ((isNaN(dimensions.objectHeight) || dimensions.objectHeight > dimensions.maxHeight) && !lightcase.settings.forceHeight) {
 						dimensions.objectHeight = dimensions.maxHeight;
 					}
 			}
@@ -420,7 +426,7 @@ jQuery.noConflict();
 				'width' : dimensions.objectWidth
 				,'height' : dimensions.objectHeight
 			});
-			
+
 			if (lightcase.objectData.type === 'video') {
 				$contentInner.children().css({
 					'width' : $object.outerWidth()
@@ -432,7 +438,7 @@ jQuery.noConflict();
 					,'height' : $object.outerHeight()
 				});
 			}
-			
+
 			$case.css({
 				'width' : $contentInner.outerWidth()
 			});
@@ -470,7 +476,7 @@ jQuery.noConflict();
 				windowWidth : $(window).width()
 				,windowHeight : $(window).height()
 			};
-			
+
 			return dimensions;
 		}
 
@@ -481,6 +487,10 @@ jQuery.noConflict();
 		 * @return	string	dataUrl	Clean url for processing content
 		 */
 		,verifyDataUrl : function(dataUrl) {
+			if (!dataUrl || dataUrl === undefined || dataUrl === '') {
+				return false;
+			}
+
 			if (dataUrl.indexOf('#') > -1) {
 				dataUrl = dataUrl.split('#');
 				dataUrl = '#' + dataUrl[dataUrl.length - 1];
@@ -507,22 +517,25 @@ jQuery.noConflict();
 				,'inline' : '#'
 			};
 
-			for (key in type) {
-				var suffixArr = type[key].split(',');
+			if (url) {
+				for (key in type) {
+					var suffixArr = type[key].split(',');
 
-				for (i = 0; i < suffixArr.length; i++) {
-					var suffix = suffixArr[i]
-						, regexp = new RegExp('\.(' + suffix + ')$', 'i')
-						// Verify only only the last 4 characters of string
-					str = url.split('?')[0].substr(-4);
+					for (i = 0; i < suffixArr.length; i++) {
+						var suffix = suffixArr[i]
+							, regexp = new RegExp('\.(' + suffix + ')$', 'i')
+							// Verify only only the last 4 characters of string
+						str = url.split('?')[0].substr(-4);
 
-					if (regexp.test(str) === true) {
-						return key;
-					} else if (key === 'inline' && url.indexOf(suffix) > -1) {
-						return key;
+						if (regexp.test(str) === true) {
+							return key;
+						} else if (key === 'inline' && (url.indexOf(suffix) > -1 || !url)) {
+							return key;
+						}
 					}
-				};
-			};
+				}
+			}
+			
 				// If no expression matched, return 'iframe'.
 			return 'iframe';
 		}
@@ -754,7 +767,7 @@ jQuery.noConflict();
 
 			$nav.removeClass('paused');
 			$next.unbind('timeoutClick').dequeue();
-			
+
 			$next.bind('timeoutClick', function() {
 				lightcase.nav.$nextItem.click();
 			}).delay(lightcase.settings.timeout).queue(function() {
@@ -770,7 +783,7 @@ jQuery.noConflict();
 		,stopTimeout : function() {
 			$play.show();
 			$pause.hide();
-			
+
 			$nav.addClass('paused');
 			$next.unbind('timeoutClick');
 		}
@@ -818,7 +831,7 @@ jQuery.noConflict();
 		,lightcaseOpen : function() {
 			lightcase.open = true;
 			$overlay.css('opacity', lightcase.settings.overlayOpacity);
-			
+
 			switch (lightcase.settings.transition) {
 				case 'fade' :
 				case 'fadeInline' :
