@@ -1,3 +1,7 @@
+2012-07-05 Cornel Boppart  <cornel@bopp-art.com>
+
+	* Added: option 'disableShrink'
+	
 2012-06-10 Cornel Boppart  <cornel@bopp-art.com>
 
 	* Bugfix: error message if url is invalid
