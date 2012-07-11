@@ -5,12 +5,13 @@
  * @author		Cornel Boppart <cornel@bopp-art.com>
  * @copyright	Author
  *
- * @version		1.0.1 (18/12/2011)
+ * @version		1.1.2 (11/07/2012)
  */
 
 jQuery.noConflict();
 
 (function($) {
+	window.lightcaseCache = {};
 	window.lightcase = {
 		labels : {
 			'errorMessage' : 'Could not found the requested source...'
@@ -46,6 +47,7 @@ jQuery.noConflict();
 			,lightcase.dimensions = lightcase.getDimensions()
 			,lightcase.settings = $.extend({
 				id : 'lightcase-case'
+				,tempIdPrefix : 'lightcase-temp-'
 				,transition : 'elastic'
 				,speedIn : 250
 				,speedOut : 250
@@ -123,21 +125,21 @@ jQuery.noConflict();
 		/**
 		 * Gets the object data
 		 *
-		 * @param	object	$element
+		 * @param	object	$object
 		 * @return	array	objectData
 		 */
-		,getObjectData : function($element) {
+		,getObjectData : function($object) {
 		 	var objectData = {
-				$link : $element
-				,title : $element.attr('title')
-				,caption : $element.children('img').attr('alt')
-				,url : lightcase.verifyDataUrl($element.attr('href'))
-				,rel : $element.attr('rel')
-				,type : lightcase.verifyDataType($element.attr('href'))
-				,isPartOfSequence : lightcase.isPartOfSequence($element.attr('rel'), ':')
-				,isPartOfSequenceWithSlideshow : lightcase.isPartOfSequence($element.attr('rel'), ':slideshow')
-				,currentIndex : $('[rel="' + $element.attr('rel') + '"]').index($element)
-				,sequenceLength : $('[rel="' + $element.attr('rel') + '"]').length
+				$link : $object
+				,title : $object.attr('title')
+				,caption : $object.children('img').attr('alt')
+				,url : lightcase.verifyDataUrl($object.attr('href'))
+				,rel : $object.attr('rel')
+				,type : lightcase.verifyDataType($object.attr('href'))
+				,isPartOfSequence : lightcase.isPartOfSequence($object.attr('rel'), ':')
+				,isPartOfSequenceWithSlideshow : lightcase.isPartOfSequence($object.attr('rel'), ':slideshow')
+				,currentIndex : $('[rel="' + $object.attr('rel') + '"]').index($object)
+				,sequenceLength : $('[rel="' + $object.attr('rel') + '"]').length
 			};
 
 				// Add sequence info to objectData
@@ -183,6 +185,10 @@ jQuery.noConflict();
 		 * @return	void
 		 */
 		,loadContent : function() {
+			if (window.lightcaseCache.originalObject) {
+				lightcase.restoreObject();
+			}
+		
 				// Create object
 			switch (lightcase.objectData.type) {
 				case 'image' :
@@ -195,7 +201,7 @@ jQuery.noConflict();
 					break;
 				case 'inline' :
 					var $object = $('<div class="inlineWrap"></div>');
-					$object.html($(lightcase.objectData.url).clone().show());
+					$object.html(lightcase.cloneObject($(lightcase.objectData.url)));
 
 						// Add custom attributes from lightcase.settings
 					$.each(lightcase.settings.inline, function(name, value) {
@@ -824,6 +830,55 @@ jQuery.noConflict();
 		}
 
 		/**
+		 * Clones the object for inline elements
+		 *
+		 * @param	object	$object
+		 * @return	object	$clone
+		 */
+		,cloneObject : function($object) {
+			var $clone = $object.clone()
+				,objectId = $object.attr('id');
+				
+				// If element is hidden, cache the object and remove
+			if ($object.is(':hidden')) {
+				lightcase.cacheObjectData($object);
+				$object.attr('id', lightcase.settings.tempIdPrefix + objectId).empty();
+			} else {
+					// Prevent duplicated id's
+				$clone.removeAttr('id');
+			}
+			
+			return $clone.show();
+		}
+		
+		/**
+		 * Caches the object data
+		 *
+		 * @param	object	$object
+		 * @return	void
+		 */
+		,cacheObjectData : function($object) {
+			$.data($object, 'cache', {
+				id : $object.attr('id')
+				,content : $object.html()
+			});
+			
+			window.lightcaseCache.originalObject = $object;
+		}
+		
+		/**
+		 * Restore object from cache
+		 *
+		 * @return	void
+		 */
+		,restoreObject : function() {
+			var $object = $('[id^="' + lightcase.settings.tempIdPrefix + '"]');
+		
+			$object.attr('id', $.data(window.lightcaseCache.originalObject, 'cache').id);
+			$object.html($.data(window.lightcaseCache.originalObject, 'cache').content);
+		}
+		
+		/**
 		 * Enters into the lightcase view
 		 *
 		 * @return	void
@@ -916,6 +971,13 @@ jQuery.noConflict();
 
 			$case.hide().removeAttr('style').removeAttr('class');
 			$contentInner.empty();
+			
+			if (window.lightcaseCache.originalObject) {
+				lightcase.restoreObject();
+			}
+			
+				// Restore cache
+			window.lightcaseCache = {};
 		}
 	};
 
