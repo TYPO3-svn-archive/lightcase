@@ -56,6 +56,7 @@ jQuery.noConflict();
 				,maxHeight : 500
 				,forceWidth : false
 				,forceHeight : false
+				,disableShrink : false
 				,shrinkFactor : .75
 				,overlayOpacity : .85
 				,slideshow : false
@@ -368,51 +369,53 @@ jQuery.noConflict();
 				,maxWidth : parseInt(lightcase.dimensions.windowWidth * lightcase.settings.shrinkFactor)
 				,maxHeight : parseInt(lightcase.dimensions.windowHeight * lightcase.settings.shrinkFactor)
 			}
-
-				// If the auto calculated maxWidth/maxHeight greather than the userdefined one, use that.
-			if (dimensions.maxWidth > lightcase.settings.maxWidth) {
-				dimensions.maxWidth = lightcase.settings.maxWidth;
-			}
-			if (dimensions.maxHeight > lightcase.settings.maxHeight) {
-				dimensions.maxHeight = lightcase.settings.maxHeight;
-			}
-
-				// Calculate the difference between screen width/height and image width/height
-			dimensions.differenceWidthAsPercent = parseInt(100 / dimensions.maxWidth * dimensions.objectWidth);
-			dimensions.differenceHeightAsPercent = parseInt(100 / dimensions.maxHeight * dimensions.objectHeight);
 			
-			switch (lightcase.objectData.type) {
-				case 'image' :
-				case 'video' :
-					if (dimensions.differenceWidthAsPercent > 100) {
-						dimensions.objectWidth = dimensions.maxWidth;
-						dimensions.objectHeight = parseInt(dimensions.objectHeight / dimensions.differenceWidthAsPercent * 100);
-					}
-					if (dimensions.differenceHeightAsPercent > 100 && dimensions.differenceWidthAsPercent < dimensions.differenceHeightAsPercent) {
-						dimensions.objectWidth = parseInt(dimensions.maxWidth / dimensions.differenceHeightAsPercent * dimensions.differenceWidthAsPercent);
-						dimensions.objectHeight = parseInt(dimensions.objectHeight / dimensions.differenceHeightAsPercent * 100);
-					}
-
-						// For images set objectHeight always to auto
-					if (lightcase.objectData.type === 'image') {
+			if (!lightcase.settings.disableShrink) {
+					// If the auto calculated maxWidth/maxHeight greather than the userdefined one, use that.
+				if (dimensions.maxWidth > lightcase.settings.maxWidth) {
+					dimensions.maxWidth = lightcase.settings.maxWidth;
+				}
+				if (dimensions.maxHeight > lightcase.settings.maxHeight) {
+					dimensions.maxHeight = lightcase.settings.maxHeight;
+				}
+			
+					// Calculate the difference between screen width/height and image width/height
+				dimensions.differenceWidthAsPercent = parseInt(100 / dimensions.maxWidth * dimensions.objectWidth);
+				dimensions.differenceHeightAsPercent = parseInt(100 / dimensions.maxHeight * dimensions.objectHeight);
+				
+				switch (lightcase.objectData.type) {
+					case 'image' :
+					case 'video' :
+						if (dimensions.differenceWidthAsPercent > 100) {
+							dimensions.objectWidth = dimensions.maxWidth;
+							dimensions.objectHeight = parseInt(dimensions.objectHeight / dimensions.differenceWidthAsPercent * 100);
+						}
+						if (dimensions.differenceHeightAsPercent > 100 && dimensions.differenceWidthAsPercent < dimensions.differenceHeightAsPercent) {
+							dimensions.objectWidth = parseInt(dimensions.maxWidth / dimensions.differenceHeightAsPercent * dimensions.differenceWidthAsPercent);
+							dimensions.objectHeight = parseInt(dimensions.objectHeight / dimensions.differenceHeightAsPercent * 100);
+						}
+	
+							// For images set objectHeight always to auto
+						if (lightcase.objectData.type === 'image') {
+							dimensions.objectHeight = 'auto';
+						}
+						break;
+					case 'error' :
+						if (isNaN(dimensions.objectWidth) || dimensions.objectWidth > dimensions.maxWidth) {
+							dimensions.objectWidth = dimensions.maxWidth;
+						}
+	
+							// Set objectHeight always to auto
 						dimensions.objectHeight = 'auto';
-					}
-					break;
-				case 'error' :
-					if (isNaN(dimensions.objectWidth) || dimensions.objectWidth > dimensions.maxWidth) {
-						dimensions.objectWidth = dimensions.maxWidth;
-					}
-
-						// Set objectHeight always to auto
-					dimensions.objectHeight = 'auto';
-					break;
-				default :
-					if ((isNaN(dimensions.objectWidth) || dimensions.objectWidth > dimensions.maxWidth) && !lightcase.settings.forceWidth) {
-						dimensions.objectWidth = dimensions.maxWidth;
-					}
-					if ((isNaN(dimensions.objectHeight) || dimensions.objectHeight > dimensions.maxHeight) && !lightcase.settings.forceHeight) {
-						dimensions.objectHeight = dimensions.maxHeight;
-					}
+						break;
+					default :
+						if ((isNaN(dimensions.objectWidth) || dimensions.objectWidth > dimensions.maxWidth) && !lightcase.settings.forceWidth) {
+							dimensions.objectWidth = dimensions.maxWidth;
+						}
+						if ((isNaN(dimensions.objectHeight) || dimensions.objectHeight > dimensions.maxHeight) && !lightcase.settings.forceHeight) {
+							dimensions.objectHeight = dimensions.maxHeight;
+						}
+				}
 			}
 
 			lightcase.adjustDimensions($object, dimensions);
