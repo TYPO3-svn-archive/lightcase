@@ -11,9 +11,10 @@
 jQuery.noConflict();
 
 (function($) {
-	window.lightcaseCache = {};
 	window.lightcase = {
-		labels : {
+		cache : {}
+		
+		,labels : {
 			'errorMessage' : 'Could not found the requested source...'
 			,'sequenceInfo.of' : ' of '
 			,'close' : 'Close'
@@ -185,7 +186,7 @@ jQuery.noConflict();
 		 * @return	void
 		 */
 		,loadContent : function() {
-			if (window.lightcaseCache.originalObject) {
+			if (lightcase.cache.originalObject) {
 				lightcase.restoreObject();
 			}
 		
@@ -863,7 +864,7 @@ jQuery.noConflict();
 				,content : $object.html()
 			});
 			
-			window.lightcaseCache.originalObject = $object;
+			lightcase.cache.originalObject = $object;
 		}
 		
 		/**
@@ -874,8 +875,8 @@ jQuery.noConflict();
 		,restoreObject : function() {
 			var $object = $('[id^="' + lightcase.settings.tempIdPrefix + '"]');
 		
-			$object.attr('id', $.data(window.lightcaseCache.originalObject, 'cache').id);
-			$object.html($.data(window.lightcaseCache.originalObject, 'cache').content);
+			$object.attr('id', $.data(lightcase.cache.originalObject, 'cache').id);
+			$object.html($.data(lightcase.cache.originalObject, 'cache').content);
 		}
 		
 		/**
@@ -972,12 +973,12 @@ jQuery.noConflict();
 			$case.hide().removeAttr('style').removeAttr('class');
 			$contentInner.empty();
 			
-			if (window.lightcaseCache.originalObject) {
+			if (lightcase.cache.originalObject) {
 				lightcase.restoreObject();
 			}
 			
 				// Restore cache
-			window.lightcaseCache = {};
+			lightcase.cache = {};
 		}
 	};
 
