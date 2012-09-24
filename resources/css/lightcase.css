@@ -34,7 +34,7 @@
 }
 #lightcase-case.loading .content,
 #lightcase-case.type-flash .content {
-	background: url(../images/loading_lite.gif) #fff no-repeat 50% 50%;
+	background: url(../images/loading_lite.gif) transparent no-repeat 50% 50%;
 }
 
 #lightcase-case {

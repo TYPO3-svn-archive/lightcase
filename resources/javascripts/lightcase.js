@@ -714,10 +714,16 @@ jQuery.noConflict();
 				$case.on('swipeleft', function(event) {
 					event.preventDefault();
 					lightcase.nav.$nextItem.click();
+					if (lightcase.isSlideshowEnabled()) {
+						lightcase.stopTimeout();
+					}
 				});
 				$case.on('swiperight', function(event) {
 					event.preventDefault();
 					lightcase.nav.$prevItem.click();
+					if (lightcase.isSlideshowEnabled()) {
+						lightcase.stopTimeout();
+					}
 				});
 
 				if (lightcase.isSlideshowEnabled()) {
