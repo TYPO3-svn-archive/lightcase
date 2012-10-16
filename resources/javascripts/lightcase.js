@@ -44,9 +44,9 @@ jQuery.noConflict();
 		 * @return	void
 		 */
 		,start : function(options) {
-			lightcase.objectData = lightcase.getObjectData(this)
-			,lightcase.dimensions = lightcase.getDimensions()
-			,lightcase.settings = $.extend({
+			lightcase.objectData = lightcase.getObjectData(this);
+			lightcase.dimensions = lightcase.getDimensions();
+			lightcase.settings = $.extend({
 				id : 'lightcase-case'
 				,tempIdPrefix : 'lightcase-temp-'
 				,transition : 'elastic'
@@ -368,7 +368,7 @@ jQuery.noConflict();
 				,objectHeight : $object.attr('height') ? $object.attr('height') : $object.outerHeight()
 				,maxWidth : parseInt(lightcase.dimensions.windowWidth * lightcase.settings.shrinkFactor)
 				,maxHeight : parseInt(lightcase.dimensions.windowHeight * lightcase.settings.shrinkFactor)
-			}
+			};
 			
 			if (!lightcase.settings.disableShrink) {
 					// If the auto calculated maxWidth/maxHeight greather than the userdefined one, use that.
@@ -528,14 +528,14 @@ jQuery.noConflict();
 			};
 
 			if (url) {
-				for (key in type) {
+				for (var key in type) {
 					var suffixArr = type[key].split(',');
 
 					for (i = 0; i < suffixArr.length; i++) {
 						var suffix = suffixArr[i]
 							, regexp = new RegExp('\.(' + suffix + ')$', 'i')
 							// Verify only only the last 4 characters of string
-						str = url.split('?')[0].substr(-4);
+							,str = url.split('?')[0].substr(-4);
 
 						if (regexp.test(str) === true) {
 							return key;

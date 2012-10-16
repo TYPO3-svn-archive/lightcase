@@ -16,6 +16,7 @@ $tempColumns = array (
 	),
 );
 
+global $_EXTKEY;
 t3lib_div::loadTCA('tt_content');
 t3lib_extMgm::addTCAcolumns('tt_content', $tempColumns, 1);
 t3lib_extMgm::addStaticFile($_EXTKEY, 'static/', 'Lightcase');

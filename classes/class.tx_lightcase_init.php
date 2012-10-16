@@ -90,7 +90,6 @@ class tx_lightcase_init extends tslib_pibase {
 	 * Writes a file with json content
 	 *
 	 * @param	array	$jsonArray
-	 * @return	.json file in typo3temp/
 	 */
 	protected function writeJsonFile(array $jsonArray) {
 		$file = $this->LLkey . '.locallang.json';
@@ -107,9 +106,8 @@ class tx_lightcase_init extends tslib_pibase {
 	 *
 	 * @param	string	$title
 	 * @param	string	$message
-	 * @param	string	t3lib_FlashMessage::WARNING
-	 *
-	 * @retun	string	flash message as html content
+	 * @param	int	$type		t3lib_FlashMessage::WARNING
+	 * @return	string	flash message as html content
 	 */
 	protected function renderFlashMessage($title, $message, $type = t3lib_FlashMessage::WARNING) {
 			// Add css files
@@ -124,9 +122,10 @@ class tx_lightcase_init extends tslib_pibase {
 	/**
 	 * Adds js and css files from the plugin conf
 	 *
-	 * @return	JS and CSS file inclusion
+	 * @param $pluginConf
+	 * @param $extConf
 	 */
-    protected function addJsCssFiles($pluginConf, $extConf) {
+	protected function addJsCssFiles($pluginConf, $extConf) {
 		$include = $pluginConf['include.'];
 
 		foreach ($include as $includePart => $includeCode) {

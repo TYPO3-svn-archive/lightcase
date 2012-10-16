@@ -26,10 +26,10 @@ require_once(t3lib_extMgm::extPath('lightcase') . 'classes/class.tx_lightcase_in
 
 class tx_lightcase_tslib_content extends tx_lightcase_init implements tslib_content_PostInitHook {
 	/**
+	 * Hooks into the postProcess of cObjects
 	 * Called from tslib_content::postInit
 	 *
 	 * @param	tslib_cObj	&$parentObject	Referenced cObject
-	 * @return	Hooks into the postProcess of cObjects
 	 */
 	public function postProcessContentObjectInitialization(tslib_cObj &$parentObject) {
 		$imageZoomEnabled = intval($parentObject->data['image_zoom']);
