@@ -534,8 +534,8 @@ jQuery.noConflict();
 					for (i = 0; i < suffixArr.length; i++) {
 						var suffix = suffixArr[i]
 							, regexp = new RegExp('\.(' + suffix + ')$', 'i')
-							// Verify only only the last 4 characters of string
-							,str = url.split('?')[0].substr(-4);
+								// Verify only the few last characters of string
+							,str = url.split('?')[0].substr(-(suffix.length + 1));
 
 						if (regexp.test(str) === true) {
 							return key;
