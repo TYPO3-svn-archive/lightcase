@@ -5,7 +5,7 @@
  * @author		Cornel Boppart <cornel@bopp-art.com>
  * @copyright	Author
  *
- * @version		1.1.2 (11/07/2012)
+ * @version		1.1.4 (01/02/2013)
  */
 
 jQuery.noConflict();
@@ -136,12 +136,12 @@ jQuery.noConflict();
 				,title : $object.attr('title')
 				,caption : $object.children('img').attr('alt')
 				,url : lightcase.verifyDataUrl($object.attr('href'))
-				,rel : $object.attr('rel')
+				,rel : $object.attr('data-rel')
 				,type : lightcase.verifyDataType($object.attr('href'))
-				,isPartOfSequence : lightcase.isPartOfSequence($object.attr('rel'), ':')
-				,isPartOfSequenceWithSlideshow : lightcase.isPartOfSequence($object.attr('rel'), ':slideshow')
-				,currentIndex : $('[rel="' + $object.attr('rel') + '"]').index($object)
-				,sequenceLength : $('[rel="' + $object.attr('rel') + '"]').length
+				,isPartOfSequence : lightcase.isPartOfSequence($object.attr('data-rel'), ':')
+				,isPartOfSequenceWithSlideshow : lightcase.isPartOfSequence($object.attr('data-rel'), ':slideshow')
+				,currentIndex : $('[data-rel="' + $object.attr('data-rel') + '"]').index($object)
+				,sequenceLength : $('[data-rel="' + $object.attr('data-rel') + '"]').length
 			};
 
 				// Add sequence info to objectData
@@ -158,7 +158,7 @@ jQuery.noConflict();
 		 * @return	boolean
 		 */
 		,isPartOfSequence : function(rel, expression) {
-			var getSimilarLinks = $('[rel="' + rel + '"]')
+			var getSimilarLinks = $('[data-rel="' + rel + '"]')
 				,regexp = new RegExp(expression);
 
 			if (regexp.test(rel) && getSimilarLinks.length > 1) {
@@ -534,8 +534,8 @@ jQuery.noConflict();
 					for (i = 0; i < suffixArr.length; i++) {
 						var suffix = suffixArr[i]
 							, regexp = new RegExp('\.(' + suffix + ')$', 'i')
-								// Verify only the few last characters of string
-							,str = url.split('?')[0].substr(-(suffix.length + 1));
+							// Verify only only the last 4 characters of string
+							,str = url.split('?')[0].substr(-4);
 
 						if (regexp.test(str) === true) {
 							return key;
@@ -810,7 +810,7 @@ jQuery.noConflict();
 		 * @return	array	items
 		 */
 		,setNavigation : function() {
-			var $links = $('[rel="' + lightcase.objectData.rel + '"]')
+			var $links = $('[data-rel="' + lightcase.objectData.rel + '"]')
 				,currentIndex = lightcase.objectData.currentIndex
 				,prevIndex = currentIndex - 1
 				,nextIndex = currentIndex + 1

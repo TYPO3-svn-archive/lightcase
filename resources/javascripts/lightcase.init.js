@@ -7,6 +7,6 @@ jQuery.noConflict();
 				lightcase.labels = data;
 			});
 		}
-		$('a[rel^=lightcase]').lightcase('init');
+		$('a[data-rel^=lightcase]').lightcase('init');
 	});
 })(jQuery);

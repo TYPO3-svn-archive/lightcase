@@ -74,12 +74,12 @@ tt_content {
 						ATagParams.cObject = TEXT
 						ATagParams.cObject {
 							insertData = 1
-							value = rel="lightcase:c{field:uid}"
+							value = data-rel="lightcase:c{field:uid}"
 							
 							override.cObject = TEXT
 							override.cObject {
 								if.isTrue.field = tx_lightcase_slideshow
-								value = rel="lightcase:c{field:uid}:slideshow"
+								value = data-rel="lightcase:c{field:uid}:slideshow"
 								insertData = 1
 							}
 						}
