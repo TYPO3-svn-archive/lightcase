@@ -1,3 +1,8 @@
+2013-08-08 Cornel Boppart  <cornel@bopp-art.com>
+
+	* Added: Latest version of the lightcase plugin
+	* Removed: Enabled rel attribute for rte links
+	
 2012-02-01 Cornel Boppart  <cornel@bopp-art.com>
 
 	* Added: HTML5 valid data-rel
